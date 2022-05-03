@@ -1,6 +1,5 @@
 from typing import Literal
-
-from slack_blocks_wrapper.section import text_node, TextType
+from .text import text_element, TextType
 
 
 def button_element(
@@ -16,7 +15,7 @@ def button_element(
         raise ValueError("style must be `primary` or `danger`")
     node = {
         "type": "button",
-        **text_node(text, TextType.PLAIN_TEXT),
+        **text_element(text, TextType.PLAIN_TEXT),
         "value": value,
         "action_id": action_id,
         "style": style
