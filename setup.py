@@ -8,7 +8,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="slack-blocks-wrapper",
-    version="0.0.1",
+    version="0.2.6",
     description="A python3 wrapper for the slack block kit framework",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -22,7 +22,7 @@ setup(
         "Programming Language :: Python :: 3.7"
     ],
     packages=find_packages(
-        exclude=["tests", "*.tests", "*.tests.*", "tests.*"]
+        exclude=["tests", "*.tests", "*.tests.*", "tests.*", "examples"]
     ),
     include_package_data=True
 )

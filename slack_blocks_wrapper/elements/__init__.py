@@ -20,3 +20,4 @@ from .select import (
     static_select_element
 )
 from .overflow_menu import overflow_menu_element
+from .text import text_element, TextType

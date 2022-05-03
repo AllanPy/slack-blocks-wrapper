@@ -1,4 +1,4 @@
-from slack_blocks_wrapper.section import text_node, TextType
+from .elements.text import text_element, TextType
 
 
 def image_block_node(
@@ -28,5 +28,5 @@ def image_block_node(
         "block_id": block_id,
         "image_url": image_url,
         "alt_text": alt_text,
-        "title": text_node(title, TextType.PLAIN_TEXT)
+        "title": text_element(title, TextType.PLAIN_TEXT)
     }

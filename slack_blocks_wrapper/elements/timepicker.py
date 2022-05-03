@@ -1,4 +1,4 @@
-from slack_blocks_wrapper.section import text_node, TextType
+from .text import text_element, TextType
 
 
 def timepicker_element(
@@ -14,7 +14,7 @@ def timepicker_element(
         raise ValueError("Action ID is required")
     node = {
         "type": "timepicker",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT),
         "action_id": action_id
     }
     if initial_time:

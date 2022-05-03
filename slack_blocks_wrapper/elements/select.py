@@ -1,6 +1,6 @@
 from typing import List, Literal
 
-from slack_blocks_wrapper.section import text_node, TextType
+from .text import text_element, TextType
 
 
 def user_select_element(
@@ -10,7 +10,7 @@ def user_select_element(
 ):
     node = {
         "type": "users_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT),
         "action_id": action_id
     }
     if initial_user is not None:
@@ -35,7 +35,7 @@ def static_select_element(
         raise ValueError("options and option_groups cannot be used together")
     node = {
         "type": "static_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT),
         "action_id": action_id
     }
     if options and not option_groups:
@@ -65,7 +65,7 @@ def external_select_element(
         raise ValueError("action_id is required")
     node = {
         "type": "external_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT),
         "action_id": action_id
     }
     if min_query_length:
@@ -95,7 +95,7 @@ def conversations_select_element(
         raise ValueError("action_id is required")
     node = {
         "type": "conversations_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT),
         "action_id": action_id
     }
     if initial_conversation is not None:
@@ -127,7 +127,7 @@ def channels_select_element(
         raise ValueError("action_id is required")
     node = {
         "type": "channels_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT),
         "action_id": action_id
     }
     if initial_channel is not None:
@@ -192,7 +192,7 @@ def filtered_conversations_select(
         "response_url_enabled": response_url_enabled,
         "focus_on_load": focus_on_load,
         "action_id": action_id,
-        "confirm": text_node(confirm_text, TextType.PLAIN_TEXT)
+        "confirm": text_element(confirm_text, TextType.PLAIN_TEXT)
     }
     if (
         not conversations and not exclude_bot_users
@@ -204,5 +204,3 @@ def filtered_conversations_select(
     if not confirm_text:
         node.pop('confirm')
     return node
-
-

@@ -1,6 +1,6 @@
 from typing import List
 
-from slack_blocks_wrapper.section import text_node, TextType
+from .text import text_element, TextType
 
 
 def multiconversations_select_element(placeholder: str, action_id: str):
@@ -20,10 +20,11 @@ def multiconversations_select_element(placeholder: str, action_id: str):
     """
     return {
         "type": "multi_conversations_select",
-        "placeholder": text_node(
+        "placeholder": text_element(
             placeholder,
-            TextType.PLAIN_TEXT, emoji=True
-        ),
+            TextType.PLAIN_TEXT,
+            emoji=True
+        )['text'],
         "action_id": action_id
     }
 
@@ -63,7 +64,7 @@ def multistatic_select_element(
             "`options` and `option_groups` cannot be used together")
     node = {
         "type": "multi_static_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT)['text'],
         "options": options,
         "action_id": action_id
     }
@@ -110,7 +111,7 @@ def multiexternal_select_element(
     """
     node = {
         "type": "multi_external_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT)['text'],
         "action_id": action_id
     }
     if min_query_length:
@@ -158,7 +159,7 @@ def multiuser_select_element(
         raise ValueError("Action ID is required")
     node = {
         "type": "multi_users_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT)['text'],
         "action_id": action_id
     }
     if initial_users:
@@ -204,7 +205,7 @@ def multichannels_select_element(
         raise ValueError("Action ID is required")
     node = {
         "type": "multi_channels_select",
-        "placeholder": text_node(placeholder, TextType.PLAIN_TEXT),
+        "placeholder": text_element(placeholder, TextType.PLAIN_TEXT)['text'],
         "action_id": action_id
     }
     if initial_channels:

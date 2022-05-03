@@ -1,4 +1,4 @@
-from slack_blocks_wrapper.section import text_node, TextType
+from .elements.text import text_element, TextType
 
 
 def input_block_node(
@@ -65,13 +65,13 @@ input blocks pass information to your app.
         raise ValueError("element is required")
     node = {
         "type": "input",
-        "label": text_node(label, TextType.PLAIN_TEXT),
+        "label": text_element(label, TextType.PLAIN_TEXT),
         "element": element
     }
     if dispatch_action:
         node["dispatch_action"] = dispatch_action
     if hint:
-        node["hint"] = text_node(hint, TextType.PLAIN_TEXT)
+        node["hint"] = text_element(hint, TextType.PLAIN_TEXT)
     if optional:
         node["optional"] = optional
     if block_id:

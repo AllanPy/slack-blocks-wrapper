@@ -1,84 +1,20 @@
-from enum import Enum
 from typing import Literal
 
-from slack_blocks_wrapper.elements import (
-    user_select_element,
-    multistatic_select_element,
-    multiconversations_select_element,
-    button_element,
-    image_element,
-    datepicker_element,
-    checkbox_element
+from ..elements import (
+    user_select_element as _user_select,
+    multistatic_select_element as _multistatic_select,
+    multiconversations_select_element as _multiconversations_select,
+    button_element as _button,
+    image_element as _image,
+    datepicker_element as _datepicker,
+    checkbox_element as _checkbox,
+    overflow_menu as _overflow_menu_element,
+    text_element as _text_element,
+    TextType
 )
-from slack_blocks_wrapper.elements.overflow_menu import overflow_menu_element
-
-
-class TextType(Enum):
-    PLAIN_TEXT = "plain_text"
-    MARKDOWN_TEXT = "mrkdwn"
 
 
 SECTION_TYPE = {"type": "section"}
-
-
-def checkbox_option(
-        text: str,
-        description: str,
-        value: str,
-        is_plain_text: bool = False,
-        is_plain_description: bool = False
-):
-    node = {
-        "text": text_node(
-            text,
-            TextType.PLAIN_TEXT if is_plain_text else TextType.MARKDOWN_TEXT
-        ),
-        "description": text_node(
-            description,
-            TextType.PLAIN_TEXT
-            if is_plain_description else TextType.MARKDOWN_TEXT
-        ),
-        "value": value
-    }
-    if description is None:
-        node.pop("description")
-    return node
-
-
-def text_node(
-        text: str,
-        text_type: TextType,
-        emoji: bool = True,
-        verbatim: bool = False,
-        value: str = None
-):
-    """
-    Summary: A slack block text node \n
-    Args:
-        text (str): The text to display
-        text_type (TextType): The text type whether plain text or markdown
-        emoji (bool): Whether to display emojis or not
-        verbatim (bool): Whether to display verbatim or not
-        value (str): The value to be passed down the app
-    """
-    if (
-            text_type.value != TextType.PLAIN_TEXT
-            and text_type.value != TextType.MARKDOWN_TEXT
-    ):
-        raise ValueError("text_type must be `plain_text` or `mrkdwn`")
-    node = {
-        "text": {
-            "type": text_type,
-            "text": text,
-            "emoji": emoji,
-            "verbatim": verbatim
-        }
-    }
-    if value is not None:
-        node["value"] = value
-    if text_type == TextType.MARKDOWN_TEXT:
-        node.pop("emoji")
-    return node
 
 
 def plain_text(emoji: bool, text: str, accessory: dict = None):
@@ -93,7 +29,7 @@ def plain_text(emoji: bool, text: str, accessory: dict = None):
     """
     return {
         **SECTION_TYPE,
-        **text_node(text, TextType.PLAIN_TEXT, emoji),
+        **_text_element(text, TextType.PLAIN_TEXT, emoji),
         **{"accessory": accessory}
     }
 
@@ -107,7 +43,7 @@ def markdown_text(text: str, accessory: dict = None):
     Returns:
         dict: a markdown text section dictionary
     """
-    return {**SECTION_TYPE, **text_node(text, TextType.MARKDOWN_TEXT),
+    return {**SECTION_TYPE, **_text_element(text, TextType.MARKDOWN_TEXT),
             **{"accessory": accessory}}
 
 
@@ -125,11 +61,11 @@ def text_fields(fields: list):
 def users_select(text: str, action_id: str, is_plain_text: bool = False):
     return {
         **SECTION_TYPE,
-        **text_node(
+        **_text_element(
             text, TextType.PLAIN_TEXT
             if is_plain_text else TextType.MARKDOWN_TEXT
         ),
-        **{"accessory": user_select_element(text, action_id)}
+        **{"accessory": _user_select(text, action_id)}
     }
 
 
@@ -145,8 +81,8 @@ def multi_static_select(text: str, options: list, action_id: str):
     """
     return {
         **SECTION_TYPE,
-        **text_node(text, TextType.PLAIN_TEXT),
-        **{"accessory": multistatic_select_element(text, options, action_id)}
+        **_text_element(text, TextType.PLAIN_TEXT),
+        **{"accessory": _multistatic_select(text, options, action_id)}
     }
 
 
@@ -166,11 +102,11 @@ def multi_conversations_select(
     """
     return {
         **SECTION_TYPE,
-        **text_node(
+        **_text_element(
             text,
             TextType.PLAIN_TEXT if is_plain_text else TextType.MARKDOWN_TEXT
         ),
-        **{"accessory": multiconversations_select_element(text, action_id)}
+        **{"accessory": _multiconversations_select(text, action_id)}
     }
 
 
@@ -198,8 +134,8 @@ def button_section(
     """
     return {
         **SECTION_TYPE,
-        **text_node(text, TextType.PLAIN_TEXT),
-        **{"accessory": button_element(
+        **_text_element(text, TextType.PLAIN_TEXT),
+        **{"accessory": _button(
             text, action_id, style, value, url, accessibility_label, confirm
         )}
     }
@@ -223,11 +159,11 @@ def image(
     """
     return {
         **SECTION_TYPE,
-        **text_node(
+        **_text_element(
             text,
             TextType.PLAIN_TEXT if is_plain_text else TextType.MARKDOWN_TEXT
         ),
-        **{"accessory": image_element(image_url, alt_text)}
+        **{"accessory": _image(image_url, alt_text)}
     }
 
 
@@ -248,11 +184,11 @@ def overflow_menu(
     """
     return {
         **SECTION_TYPE,
-        **text_node(
+        **_text_element(
             text,
             TextType.PLAIN_TEXT if is_plain_text else TextType.MARKDOWN_TEXT
         ),
-        **{"accessory": overflow_menu_element(options, action_id)}
+        **{"accessory": _overflow_menu_element(options, action_id)}
     }
 
 
@@ -276,11 +212,11 @@ def datepicker(
     """
     return {
         **SECTION_TYPE,
-        **text_node(
+        **_text_element(
             text,
             TextType.PLAIN_TEXT if is_plain_text else TextType.MARKDOWN_TEXT
         ),
-        **{"accessory": datepicker_element(
+        **{"accessory": _datepicker(
             action_id, initial_date, placeholder
         )}
     }
@@ -319,11 +255,11 @@ def checkbox(
     """
     return {
         **SECTION_TYPE,
-        **text_node(
+        **_text_element(
             text,
             TextType.PLAIN_TEXT if is_plain_text else TextType.MARKDOWN_TEXT
         ),
-        **{"accessory": checkbox_element(
+        **{"accessory": _checkbox(
             options, action_id, initial_options, confirm, focus_on_load
         )}
     }

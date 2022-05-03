@@ -1,6 +1,6 @@
 import re
 
-from slack_blocks_wrapper.section import text_node, TextType
+from .text import text_element, TextType
 
 
 def datepicker_element(
@@ -22,8 +22,7 @@ def datepicker_element(
     else:
         raise ValueError("`initial_date` must be a valid date")
     if placeholder:
-        node["placeholder"] = text_node(placeholder, TextType.PLAIN_TEXT)
+        node["placeholder"] = text_element(placeholder, TextType.PLAIN_TEXT)
     if confirm:
         node["confirm"] = confirm
     return node
-
